@@ -1,54 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
-import { CourseService } from '../../services/course.service';
-import { CourseSummaryWidget } from '../../components/course-summary-widget/course-summary-widget';
+import { Component } from '@angular/core';
 
 @Component({
-
-  selector:'app-home',
-
-  standalone:true,
-
-  imports:[
-    CommonModule,
-    FormsModule,
-    CourseSummaryWidget
-],
-
-  templateUrl:'./home.html',
-
-  styleUrl:'./home.css'
-
+  selector: 'app-home',
+  imports: [],
+  templateUrl: './home.html',
+  styleUrl: './home.css',
 })
-
-export class Home implements OnInit{
-
-  portalName='Student Course Portal';
-
-  isPortalActive=true;
-
-  message='';
-
-  searchTerm='';
-
-  coursesCount=0;
-
-  constructor(private courseService:CourseService){}
-
-  ngOnInit(): void{
-
-    this.coursesCount=this.courseService.getCourses().length;
-
-    console.log("HomeComponent initialised — courses loaded");
-
-  }
-
-  onEnrollClick(){
-
-    this.message="Enrollment opened!";
-
-  }
-
-}
+export class Home {}

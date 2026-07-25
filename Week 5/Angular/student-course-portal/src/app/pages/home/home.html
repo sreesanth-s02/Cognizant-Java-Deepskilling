@@ -1,63 +1,13 @@
-<h1>{{portalName}}</h1>
+<h1>Welcome to Student Course Portal</h1>
 
 <p>
-Welcome to the Student Course Portal.
+Manage your enrolled courses and academic information.
 </p>
 
-<button
-[disabled]="!isPortalActive"
-(click)="onEnrollClick()">
+<div>
+<p>Courses Available : 12</p>
 
-Enroll Now
+<p>Enrolled : 3</p>
 
-</button>
-
-<p>{{message}}</p>
-
-<br>
-
-<input
-type="text"
-[(ngModel)]="searchTerm"
-placeholder="Search Course">
-
-<p>
-
-Searching for :
-
-{{searchTerm}}
-
-</p>
-
-<hr>
-
-<h2>Statistics</h2>
-
-<p>
-
-Courses Available :
-
-{{coursesCount}}
-
-</p>
-
-<p>
-
-Enrolled :
-
-3
-
-</p>
-
-<p>
-
-GPA :
-
-3.8
-
-</p>
-<hr>
-
-<app-course-summary-widget>
-
-</app-course-summary-widget>
+<p>GPA : 3.8</p>
+</div>

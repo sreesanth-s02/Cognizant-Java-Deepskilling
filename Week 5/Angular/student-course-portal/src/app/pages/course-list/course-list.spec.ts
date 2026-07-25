@@ -8,13 +8,12 @@ describe('CourseList', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CourseList]
-    })
-    .compileComponents();
+      imports: [CourseList],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CourseList);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
