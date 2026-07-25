@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { Header } from './components/header/header';
 import { Home } from './pages/home/home';
 import { CourseList } from './pages/course-list/course-list';
+import { StudentProfile } from './pages/student-profile/student-profile';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,11 @@ import { CourseList } from './pages/course-list/course-list';
     RouterOutlet,
     Header,
     Home,
-    CourseList
+    CourseList,
+    StudentProfile
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {}
+export class App {
+}

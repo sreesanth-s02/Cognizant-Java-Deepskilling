@@ -1,1 +1,86 @@
-<p>student-profile works!</p>
+<h2>Student Registration</h2>
+
+<form #studentForm="ngForm" (ngSubmit)="onSubmit()">
+
+  <label>Name</label><br>
+  <input
+    type="text"
+    name="name"
+    required
+    [(ngModel)]="student.name"
+    #name="ngModel">
+
+  <div *ngIf="name.invalid && name.touched">
+    Name is required.
+  </div>
+
+  <br><br>
+
+  <label>Email</label><br>
+
+  <input
+    type="email"
+    name="email"
+    required
+    email
+    [(ngModel)]="student.email"
+    #email="ngModel">
+
+  <div *ngIf="email.invalid && email.touched">
+    Enter a valid email.
+  </div>
+
+  <br><br>
+
+  <label>Department</label><br>
+
+  <select
+    name="department"
+    required
+    [(ngModel)]="student.department"
+    #department="ngModel">
+
+    <option value="">Select</option>
+    <option>AI & DS</option>
+    <option>CSE</option>
+    <option>ECE</option>
+
+  </select>
+
+  <br><br>
+
+  <label>Year</label><br>
+
+  <input
+    type="number"
+    name="year"
+    required
+    min="1"
+    max="4"
+    [(ngModel)]="student.year">
+
+  <br><br>
+
+  <button
+    type="submit"
+    [disabled]="studentForm.invalid">
+    Register
+  </button>
+
+</form>
+
+<hr>
+
+<div *ngIf="submitted">
+
+<h3>Submitted Details</h3>
+
+<p>Name : {{ student.name }}</p>
+
+<p>Email : {{ student.email }}</p>
+
+<p>Department : {{ student.department }}</p>
+
+<p>Year : {{ student.year }}</p>
+
+</div>
