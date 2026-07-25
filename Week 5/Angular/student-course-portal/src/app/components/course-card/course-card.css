@@ -1,0 +1,13 @@
+.card--full{
+    background:#eef;
+    margin:10px;
+    padding:10px;
+}
+
+.expanded{
+    min-height:180px;
+}
+
+.card--enrolled{
+    background:#dff0d8;
+}
