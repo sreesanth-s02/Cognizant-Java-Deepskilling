@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ReactiveEnrollmentForm } from './pages/reactive-enrollment-form/reactive-enrollment-form';
 
 import { Header } from './components/header/header';
 import { Home } from './pages/home/home';
@@ -14,7 +15,8 @@ import { StudentProfile } from './pages/student-profile/student-profile';
     Header,
     Home,
     CourseList,
-    StudentProfile
+    StudentProfile,
+    ReactiveEnrollmentForm
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
