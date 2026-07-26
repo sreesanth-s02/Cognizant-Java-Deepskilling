@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  ChangeDetectorRef
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import { CourseCard } from '../../components/course-card/course-card';
 import { Course } from '../../models/course.model';
-import { CourseService } from '../../services/course';
 import { EnrollmentService } from '../../services/enrollment';
+
+import * as CourseActions from '../../store/course/course.actions';
+import { selectAllCourses } from '../../store/course/course.selectors';
 
 @Component({
   selector: 'app-course-list',
@@ -23,46 +24,34 @@ import { EnrollmentService } from '../../services/enrollment';
 })
 export class CourseList implements OnInit {
 
-  isLoading = true;
-
+  isLoading = false;
   selectedCourseId = 0;
 
-  courses: Course[] = [];
+
+  courses$: Observable<Course[]>;
 
   constructor(
-    private courseService: CourseService,
+    private store: Store,
     private enrollmentService: EnrollmentService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private router: Router
+  ) {
 
-  ngOnInit(): void {
-    this.loadCourses();
+    this.courses$ = this.store.select(selectAllCourses);
+
   }
 
-  loadCourses(): void {
+  ngOnInit(): void {
 
-    this.isLoading = true;
-
-    this.courseService.getCourses().subscribe({
-
-      next: (courses) => {
-        this.courses = courses;
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      },
-
-      error: (err) => {
-        console.error('HTTP Error:', err);
-        this.isLoading = false;
-      }
-
-    });
+    this.store.dispatch(
+      CourseActions.loadCourses()
+    );
 
   }
 
   trackByCourseId(index: number, course: Course): number {
+
     return course.id;
+
   }
 
   viewCourse(courseId: number): void {
@@ -81,43 +70,46 @@ export class CourseList implements OnInit {
   updateCourse(course: Course): void {
 
     const updatedCourse: Course = {
+
       ...course,
+
       gradeStatus: 'passed'
+
     };
 
-    this.courseService.updateCourse(updatedCourse).subscribe({
+    this.store.dispatch(
 
-      next: () => {
-        alert('Course Updated Successfully');
-        this.loadCourses();
-      },
+      CourseActions.updateCourse({
 
-      error: (err) => {
-        console.error(err);
-      }
+        course: updatedCourse
 
-    });
+      })
+
+    );
+
+    alert('Course Updated Successfully');
 
   }
 
   deleteCourse(id: number): void {
 
     if (!confirm('Delete this course?')) {
+
       return;
+
     }
 
-    this.courseService.deleteCourse(id).subscribe({
+    this.store.dispatch(
 
-      next: () => {
-        alert('Course Deleted Successfully');
-        this.loadCourses();
-      },
+      CourseActions.deleteCourse({
 
-      error: (err) => {
-        console.error(err);
-      }
+        id
 
-    });
+      })
+
+    );
+
+    alert('Course Deleted Successfully');
 
   }
 
@@ -128,8 +120,11 @@ export class CourseList implements OnInit {
     this.selectedCourseId = courseId;
 
     console.log(
+
       'Enrolled Courses:',
+
       this.enrollmentService.getEnrolledCourses()
+
     );
 
   }

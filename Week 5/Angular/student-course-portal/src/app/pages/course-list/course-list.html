@@ -4,29 +4,33 @@
 
 <div *ngIf="!isLoading">
 
-  <div *ngIf="courses.length > 0; else noCourses">
+  <ng-container *ngIf="(courses$ | async) as courses">
 
-    <div *ngFor="let c of courses; trackBy: trackByCourseId">
+    <div *ngIf="courses.length > 0; else noCourses">
 
-      <app-course-card
-        [course]="c"
-        (enrollRequested)="onEnroll($event)"
-        (viewRequested)="viewCourse($event)">
-      </app-course-card>
+      <div *ngFor="let c of courses; trackBy: trackByCourseId">
 
-      <button (click)="updateCourse(c)">
-        Update
-      </button>
+        <app-course-card
+          [course]="c"
+          (enrollRequested)="onEnroll($event)"
+          (viewRequested)="viewCourse($event)">
+        </app-course-card>
 
-      <button (click)="deleteCourse(c.id)">
-        Delete
-      </button>
+        <button (click)="updateCourse(c)">
+          Update
+        </button>
 
-      <hr>
+        <button (click)="deleteCourse(c.id)">
+          Delete
+        </button>
+
+        <hr>
+
+      </div>
 
     </div>
 
-  </div>
+  </ng-container>
 
 </div>
 

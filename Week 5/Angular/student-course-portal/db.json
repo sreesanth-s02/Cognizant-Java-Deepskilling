@@ -1,39 +1,32 @@
 {
   "courses": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Data Structures",
       "code": "CS101",
       "credits": 4,
       "gradeStatus": "passed"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Operating Systems",
       "code": "CS201",
       "credits": 4,
       "gradeStatus": "passed"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Database Systems",
       "code": "CS301",
       "credits": 3,
       "gradeStatus": "passed"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Computer Networks",
       "code": "CS401",
       "credits": 4,
       "gradeStatus": "passed"
-    },
-    {
-      "id": 5,
-      "name": "Artificial Intelligence",
-      "code": "AI501",
-      "credits": 5,
-      "gradeStatus": "pending"
     }
   ],
   "students": [],
