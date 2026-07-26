@@ -2,20 +2,36 @@
   Loading courses...
 </p>
 
-<div *ngIf="!isLoading; else noCourses">
+<div *ngIf="!isLoading">
 
-  <app-course-card
-      *ngFor="let c of courses; trackBy: trackByCourseId"
-      [course]="c"
-      (enrollRequested)="onEnroll($event)">
-  </app-course-card>
+  <div *ngIf="courses.length > 0; else noCourses">
+
+    <div *ngFor="let c of courses; trackBy: trackByCourseId">
+
+      <app-course-card
+        [course]="c"
+        (enrollRequested)="onEnroll($event)"
+        (viewRequested)="viewCourse($event)">
+      </app-course-card>
+
+      <button (click)="updateCourse(c)">
+        Update
+      </button>
+
+      <button (click)="deleteCourse(c.id)">
+        Delete
+      </button>
+
+      <hr>
+
+    </div>
+
+  </div>
 
 </div>
 
 <ng-template #noCourses>
-
   <p>No courses available.</p>
-
 </ng-template>
 
 <p *ngIf="selectedCourseId">

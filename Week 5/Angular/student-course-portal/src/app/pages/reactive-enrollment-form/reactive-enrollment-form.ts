@@ -11,6 +11,7 @@ import {
 
 import { noCourseCode } from '../../validators/course-code.validator';
 import { simulateEmailCheck } from '../../validators/email.validator';
+import { CourseService } from '../../services/course';
 
 @Component({
   selector: 'app-reactive-enrollment-form',
@@ -26,7 +27,10 @@ export class ReactiveEnrollmentForm {
 
   enrollForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+  private fb: FormBuilder,
+  private courseService: CourseService
+  ) {
 
     this.enrollForm = this.fb.group({
 
@@ -96,8 +100,35 @@ export class ReactiveEnrollmentForm {
   onSubmit(): void {
 
     if (this.enrollForm.valid) {
-      console.log(this.enrollForm.value);
-      console.log(this.enrollForm.getRawValue());
+      const form = this.enrollForm.value;
+      const newCourse = {
+
+        name: form.studentName!,
+        code: form.courseId!,
+        credits: 4,
+        gradeStatus: 'pending' as const
+
+      };
+
+      this.courseService.createCourse(newCourse).subscribe({
+
+        next: (course) => {
+
+          console.log('Created:', course);
+
+          alert('Course Added Successfully');
+
+          this.enrollForm.reset();
+
+        },
+
+        error: (err) => {
+
+          console.error(err);
+
+        }
+
+      });
     } else {
       this.enrollForm.markAllAsTouched();
     }

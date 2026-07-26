@@ -1,6 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef
+} from '@angular/core';
+import { Router } from '@angular/router';
+
 import { CourseCard } from '../../components/course-card/course-card';
+import { Course } from '../../models/course.model';
+import { CourseService } from '../../services/course';
+import { EnrollmentService } from '../../services/enrollment';
 
 @Component({
   selector: 'app-course-list',
@@ -18,56 +27,111 @@ export class CourseList implements OnInit {
 
   selectedCourseId = 0;
 
-  courses = [
-    {
-      id: 1,
-      name: 'Angular',
-      code: 'CS101',
-      credits: 4,
-      gradeStatus: 'passed'
-    },
-    {
-      id: 2,
-      name: 'Java',
-      code: 'CS102',
-      credits: 3,
-      gradeStatus: 'failed'
-    },
-    {
-      id: 3,
-      name: 'Spring Boot',
-      code: 'CS103',
-      credits: 4,
-      gradeStatus: 'pending'
-    },
-    {
-      id: 4,
-      name: 'SQL',
-      code: 'CS104',
-      credits: 2,
-      gradeStatus: 'passed'
-    },
-    {
-      id: 5,
-      name: 'AI',
-      code: 'CS105',
-      credits: 5,
-      gradeStatus: 'pending'
-    }
-  ];
+  courses: Course[] = [];
 
-  ngOnInit() {
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1500);
+  constructor(
+    private courseService: CourseService,
+    private enrollmentService: EnrollmentService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.loadCourses();
   }
 
-  trackByCourseId(index: number, course: any) {
+  loadCourses(): void {
+
+    this.isLoading = true;
+
+    this.courseService.getCourses().subscribe({
+
+      next: (courses) => {
+        this.courses = courses;
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+
+      error: (err) => {
+        console.error('HTTP Error:', err);
+        this.isLoading = false;
+      }
+
+    });
+
+  }
+
+  trackByCourseId(index: number, course: Course): number {
     return course.id;
   }
 
-  onEnroll(courseId: number) {
-    console.log('Enrolling in course:', courseId);
-    this.selectedCourseId = courseId;
+  viewCourse(courseId: number): void {
+
+    this.router.navigate(
+      ['/courses', courseId],
+      {
+        queryParams: {
+          mode: 'view'
+        }
+      }
+    );
+
   }
+
+  updateCourse(course: Course): void {
+
+    const updatedCourse: Course = {
+      ...course,
+      gradeStatus: 'passed'
+    };
+
+    this.courseService.updateCourse(updatedCourse).subscribe({
+
+      next: () => {
+        alert('Course Updated Successfully');
+        this.loadCourses();
+      },
+
+      error: (err) => {
+        console.error(err);
+      }
+
+    });
+
+  }
+
+  deleteCourse(id: number): void {
+
+    if (!confirm('Delete this course?')) {
+      return;
+    }
+
+    this.courseService.deleteCourse(id).subscribe({
+
+      next: () => {
+        alert('Course Deleted Successfully');
+        this.loadCourses();
+      },
+
+      error: (err) => {
+        console.error(err);
+      }
+
+    });
+
+  }
+
+  onEnroll(courseId: number): void {
+
+    this.enrollmentService.enroll(courseId);
+
+    this.selectedCourseId = courseId;
+
+    console.log(
+      'Enrolled Courses:',
+      this.enrollmentService.getEnrolledCourses()
+    );
+
+  }
+
 }

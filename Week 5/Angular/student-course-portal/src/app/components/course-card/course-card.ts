@@ -34,6 +34,9 @@ export class CourseCard implements OnChanges {
   @Output()
   enrollRequested = new EventEmitter<number>();
 
+  @Output()
+  viewRequested = new EventEmitter<number>();
+
   isExpanded = false;
 
   get cardClasses() {

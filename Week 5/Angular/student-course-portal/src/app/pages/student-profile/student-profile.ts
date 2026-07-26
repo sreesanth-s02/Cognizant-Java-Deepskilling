@@ -1,27 +1,37 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NotificationService } from '../../services/notification';
+import { EnrollmentService } from '../../services/enrollment';
+import { Course } from '../../models/course.model';
 
 @Component({
   selector: 'app-student-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule
+  ],
+  providers: [
+    NotificationService
+  ],
   templateUrl: './student-profile.html',
   styleUrl: './student-profile.css'
 })
 export class StudentProfile {
 
-  student = {
-    name: '',
-    email: '',
-    department: '',
-    year: ''
-  };
+  constructor(
+    public enrollmentService: EnrollmentService,
+    private notificationService : NotificationService
+  ) {}
 
-  submitted = false;
-
-  onSubmit() {
-    this.submitted = true;
-    console.log(this.student);
+  get enrolledCourses(): Course[] {
+    return this.enrollmentService.getEnrolledCourses();
   }
+  showNotification(): void {
+
+  this.notificationService.show(
+    'Welcome to Student Profile!'
+  );
+
+}
+
 }
